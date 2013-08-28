@@ -1,5 +1,9 @@
 # ChangeLog #
 
+## 1.2.0 - August 28, 2013 ##
+* Changed delete to never copy the property over instead of just setting
+  it to undefined.
+
 ## 1.1.0 - July 15, 2013 ##
 * Changed copy to grab constructor from prototype instead of object directly.
   This allows objects like {'constructor': ... } to be copied.
