@@ -1,5 +1,8 @@
 # ChangeLog #
 
+## 1.3.0 - October 22, 2013 ##
+* Added record module for declaring easy to work with immutable objects.
+
 ## 1.2.0 - August 28, 2013 ##
 * Changed delete to never copy the property over instead of just setting
   it to undefined.

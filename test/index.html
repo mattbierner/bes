@@ -19,15 +19,15 @@
             }
         });
         require(
-            ['testArray', 'testObject'],
-            function(testArray, testObject)
+            ['testArray', 'testObject', 'testRecord'],
+            function(/*...*/)
             {
-                [testArray, testObject].forEach(function(m){
+                [].forEach.call(arguments, function(m){
                     m.module && module(m.module);
                     m.tests && m.tests.forEach(function(e){ test.apply(this, e); });
                     m.asyncTests && m.asyncTests.forEach(function(e){ asyncTest.apply(this, e); });
-          });
             });
+        });
     </script>
 
 </body>
