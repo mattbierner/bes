@@ -1,5 +1,8 @@
 # ChangeLog #
 
+## 1.4.0 - October 23, 2013 ##
+* Added `record.extend` for adding additional keys to some base record.
+
 ## 1.3.1 - October 23, 2013 ##
 * Modified object operations to reduce number of copied properties.
 
