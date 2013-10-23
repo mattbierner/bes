@@ -1,7 +1,4 @@
-# Amulet - Versions of builtin Javascript function which do not modify passed in object #
+# Amulet
 
-## About ##
-
-
-
-## Modules ##
+## About
+Small library for working with immutable object in Javascript.

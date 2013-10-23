@@ -1,5 +1,8 @@
 # ChangeLog #
 
+## 1.3.1 - October 23, 2013 ##
+* Modified object operations to reduce number of copied properties.
+
 ## 1.3.0 - October 22, 2013 ##
 * Added record module for declaring easy to work with immutable objects.
 
