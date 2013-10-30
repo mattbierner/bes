@@ -5,24 +5,25 @@ function(object){
     return {
         'module': "Object Tests",
         'tests': [
-            ["Define Basic Property",
+            ["Set Basic Property",
             function(){
                 var a = Object.freeze({x: 3, y: {z: 4}});
                 
-                assert.deepEqual(object.defineProperty(a, 'w', {'value': 3, 'enumerable': true}), {'x': 3, 'y': {z: 4}, 'w': 3});
+                assert.deepEqual(object.setProperty(a, 'w', 3, true), {'x': 3, 'y': {z: 4}, 'w': 3});
                 assert.deepEqual(a, {x: 3, y: {z: 4}});
             }],
-            ["Congigure non config Property",
+            ["Config non config Property",
             function(){
                 var a = Object.freeze(Object.create(Object.prototype, {
                     'x': {
                         'value': 3,
+                        'writable': false,
                         'configurable': false,
                         'enumerable': true
                     }
                 }));
                 
-                assert.deepEqual(object.defineProperty(a, 'x', {'value': 7, 'enumerable': true}), {'x': 7});
+                assert.deepEqual(object.setProperty(a, 'x', 7, true), {'x': 7});
                 assert.deepEqual(a, {x: 3});
             }],
             

@@ -1,0 +1,92 @@
+/**
+ * 
+ */
+package (
+    declare,
+    extend)
+with
+    import 'amulet/object' {setProperty}
+in {
+
+var concat = Function.prototype.call.bind(Array.prototype.concat);
+
+var makeConstructor = \keys -> {
+    var len = keys.length;
+    return \args(...) -> {
+        for (var i = 0; i < len; i = i + 1)
+            this[keys[i]] = args[i];
+    };
+};
+
+var propertyCase = \name ->
+    name
+        .match(`\w\S*`g)
+        .map(\str[first] -> first.toUpperCase() + str.slice(1))
+        .join('');
+
+
+var concatArgs = let
+    map = \x -> x
+in
+    \arr, args -> 
+        concat(arr, [].map.call(args, map));
+
+/*
+ ******************************************************************************/
+/**
+ * Define a new record style object
+ * 
+ * Records are objects with a set of properties defined on them. Custom setters
+ * functions are created on the object that return a new object with the given
+ * property is changed. This does not modify the original. Properties may be read
+ * using direct dot access.
+ * 
+ * An additional create method is defined on the constructor object to create
+ * a record instance without using new. 
+ * 
+ * @param proto Prototype of the record instances. May be null.
+ * @param keys Ordered set of names for properties on the record.
+ * @param [ctor] Optional custom constructor to use. Default constructor 
+ *    binds every key in `keys` to the argument at that index.
+ * 
+ */
+declare = let
+    makeSetter = \key -> \x -> setProperty(this, key, x),
+    
+    makeCtorSetter = \key -> Function.prototype.call.bind(makeSetter(key))
+in
+    \proto, keys, ctor -> {
+        var construct = (ctor || makeConstructor(keys));
+        construct.prototype = (proto || new Object);
+        construct.__keys = keys;
+
+        construct.prototype.constructor = construct;
+        
+        keys.forEach(\key -> {
+            var setterName = 'set' + propertyCase(key);
+            construct[setterName] = makeCtorSetter(key);
+            construct.prototype[setterName] = makeSetter(key);
+        });
+        
+        construct.create = \args(...) ->
+            new (construct.bind.apply(construct, concatArgs([null], args)));
+        
+        return construct;
+    };
+
+/**
+ * Extend an existing record with a new set of keys to create a new record.
+ * 
+ * @param base Extended record ctor.
+ * @param keys Set of keys.
+ * @param [ctor] Custom constructor for new record.
+ * 
+ * @return New record ctor.
+ */
+extend = \base, keys, ctor ->
+    declare(
+        new base,
+        concat(base.__keys, keys),
+        ctor);
+
+}

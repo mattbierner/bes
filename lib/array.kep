@@ -1,0 +1,93 @@
+/**
+ * @fileOverview
+ */
+package (
+    push,
+    pop,
+    shift,
+    unshift,
+    splice,
+    reverse)
+{
+
+var concat = Function.prototype.call.bind(Array.prototype.concat);
+var slice = Function.prototype.call.bind(Array.prototype.slice);
+var reduce = Function.prototype.call.bind(Array.prototype.reduce);
+
+/* Array Operations
+ ******************************************************************************/
+/**
+ * Create a new array with zero or more 'elements' appended onto  'arr'.
+ * 
+ * @param arr Array like object
+ * @param ...elements Items to push onto 'arr'.
+ * 
+ * @return New array of 'elements' appended onto 'arr'.
+ */
+push = \args(arr, ...) ->
+    concat(arr, slice(args, 1));
+
+/**
+ * Create a new array from 'arr' with last element removed.
+ * 
+ * @param arr Array like object.
+ * 
+ * @return New array with last element removed or empty array if 'arr' was empty.
+ */
+pop = \arr ->
+    slice(arr, 0, arr.length - 1);
+
+/**
+ * Create a new array with zero or more 'elements' prepended onto 'arr'.
+ * 
+ * @param arr Array like object
+ * @param ...elements Items to unshift onto 'arr'.
+ * 
+ * @return New array of 'elements' pushed onto end of 'arr'.
+ */
+unshift = \args(arr, ...) ->
+    concat(slice(args, 1), arr);
+
+/**
+ * Create a new array from 'arr' with first element removed/
+ * 
+ * @param arr Array like object.
+ * 
+ * @return New array from 'arr' with first element removed.
+ */
+shift = \arr -> slice(arr, 1);
+
+/**
+ * Create a new array from 'arr' with 'howMany' elements removed at 'index' and
+ * zero or more 'elements' inserted.
+ * 
+ * @param arr Array like object.
+ * @param {number} index Index where to insert and remove elements. If negative,
+ *     use as offset from end of array.
+ * @param {number} howMany Number of elements to remove.
+ * @param ...elements Items to insert at index.
+ * 
+ * @return New array from 'arr' with 'howMany' removed at 'index' and
+ *    zero or more 'elements' inserted.
+ */
+splice  = \args(arr, index, howMany, ...) -> let
+    i = (index < 0 ? arr.length + index : index)
+in
+    slice(arr, 0, i)
+        .concat(
+            slice(args, 3),
+            slice(arr, i + Math.max(howMany, 0)));
+
+/**
+ * Create a new array from reversing 'arr'.
+ * 
+ * @param arr Array like object.
+ * 
+ * @return New array of reversed 'arr'.
+ */
+reverse = \arr ->
+    (arr.length > 0 ?
+        reduce(slice(arr, 1), unshift, [arr[0]]) :
+        arr);
+
+}

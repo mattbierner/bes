@@ -1,5 +1,11 @@
 # ChangeLog #
 
+## 2.0.0 - October 30, 2013 ##
+* Rewrote object to get rid of all the `defineProperty` stuff and just support
+  `value` and `enumerable`. `configurable`, `writable`, and `setters` make no
+  sense on immtable objects. `getters` maybe, but often not.
+** Now just has `setProperty`, `setPropertyies`, and `deleteProperty`.
+
 ## 1.4.0 - October 23, 2013 ##
 * Added `record.extend` for adding additional keys to some base record.
 
