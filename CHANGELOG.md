@@ -1,5 +1,8 @@
 # ChangeLog #
 
+## 2.0.1 - November 1, 2013
+* Changed record to not modify passed in `ctor` or `proto` object.
+
 ## 2.0.0 - October 30, 2013 ##
 * Rewrote object to get rid of all the `defineProperty` stuff and just support
   `value` and `enumerable`. `configurable`, `writable`, and `setters` make no

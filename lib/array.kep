@@ -34,8 +34,8 @@ push = \args(arr, ...) ->
  * 
  * @return New array with last element removed or empty array if 'arr' was empty.
  */
-pop = \arr ->
-    slice(arr, 0, arr.length - 1);
+pop = \arr{length} ->
+    slice(arr, 0, length - 1);
 
 /**
  * Create a new array with zero or more 'elements' prepended onto 'arr'.
@@ -70,8 +70,8 @@ shift = \arr -> slice(arr, 1);
  * @return New array from 'arr' with 'howMany' removed at 'index' and
  *    zero or more 'elements' inserted.
  */
-splice  = \args(arr, index, howMany, ...) -> let
-    i = (index < 0 ? arr.length + index : index)
+splice  = \args(arr{length}, index, howMany, ...) -> let
+    i = (index < 0 ? length + index : index)
 in
     slice(arr, 0, i)
         .concat(
@@ -85,8 +85,8 @@ in
  * 
  * @return New array of reversed 'arr'.
  */
-reverse = \arr ->
-    (arr.length > 0 ?
+reverse = \arr{length} ->
+    (length > 0 ?
         reduce(slice(arr, 1), unshift, [arr[0]]) :
         arr);
 

@@ -1,13 +1,15 @@
 {
   "name": "Amulet",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "",
   "main": "",
   "repository": {
     "type": "git",
     "url": "git@github.com:mattbierner/amulet.git"
   },
-  "keywords": [],
+  "keywords": [
+    "immutable",
+    "object"],
   "author": "Matt Bierner",
   "license": "MIT"
 }

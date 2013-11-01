@@ -8,15 +8,9 @@ with
     import 'amulet/object' {setProperty}
 in {
 
+var apply = Function.prototype.call.bind(Function.prototype.apply);
 var concat = Function.prototype.call.bind(Array.prototype.concat);
-
-var makeConstructor = \keys -> {
-    var len = keys.length;
-    return \args(...) -> {
-        for (var i = 0; i < len; i = i + 1)
-            this[keys[i]] = args[i];
-    };
-};
+var map = Function.prototype.call.bind(Array.prototype.map);
 
 var propertyCase = \name ->
     name
@@ -24,12 +18,10 @@ var propertyCase = \name ->
         .map(\str[first] -> first.toUpperCase() + str.slice(1))
         .join('');
 
+var identity = \x -> x;
 
-var concatArgs = let
-    map = \x -> x
-in
-    \arr, args -> 
-        concat(arr, [].map.call(args, map));
+var concatArgs = \arr, args -> 
+    concat(arr, map(args, identity));
 
 /*
  ******************************************************************************/
@@ -51,15 +43,29 @@ in
  * 
  */
 declare = let
+    defaultConstructor = \keys -> {
+        var len = keys.length;
+        return \args(...) -> {
+            for (var i = 0; i < len; i = i + 1)
+                this[keys[i]] = args[i];
+        };
+    },
+    
+    wrapConstructor = \ctor ->
+        \args(...) -> apply(ctor, this, args),
+
     makeSetter = \key -> \x -> setProperty(this, key, x),
     
     makeCtorSetter = \key -> Function.prototype.call.bind(makeSetter(key))
 in
     \proto, keys, ctor -> {
-        var construct = (ctor || makeConstructor(keys));
-        construct.prototype = (proto || new Object);
+        var construct = (ctor ? wrapConstructor(ctor) : defaultConstructor(keys));
+        
         construct.__keys = keys;
-
+        construct.create = \args(...) ->
+            new (construct.bind.apply(construct, concatArgs([null], args)));
+            
+        construct.prototype = Object.create(proto || new Object);
         construct.prototype.constructor = construct;
         
         keys.forEach(\key -> {
@@ -67,9 +73,6 @@ in
             construct[setterName] = makeCtorSetter(key);
             construct.prototype[setterName] = makeSetter(key);
         });
-        
-        construct.create = \args(...) ->
-            new (construct.bind.apply(construct, concatArgs([null], args)));
         
         return construct;
     };
