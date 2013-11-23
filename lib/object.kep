@@ -1,5 +1,5 @@
 /**
- * 
+ * @fileOverview 
  */
 package (
     setProperty,
@@ -7,12 +7,14 @@ package (
     deleteProperty)
 {
 
-var copy = \obj -> {
-    var out = new (Object.getPrototypeOf(obj).constructor)();
-    Object.getOwnPropertyNames(obj).forEach(\i -> {
-        out[i] = obj[i];
-    });
-    return out;
+var copyProps = \obj -> {
+    var names = Object.getOwnPropertyNames(obj),
+        props = {};
+    for (var i = 0, len = names.length; i < len; i = i + 1) {
+        var key = names[i];
+        props[key] = Object.getOwnPropertyDescriptor(obj, key);
+    }
+    return props;
 };
 
 /* Operations
@@ -22,45 +24,59 @@ var copy = \obj -> {
  * 
  * Does not call setter and does not mutate original object.
  * 
+ * The target property's  `writable`, `configurable`, `getter`, and `setter`
+ * fields are discarded.
+ * 
  * @param obj Object to set property on.
  * @param {String} prop Property name.
  * @param value New value for property.
- * @param [enumerable] Is the new property enumerable. If not specified, inherited
- *    value is used.
+ * @param [enumerable] Is the new property enumerable? If not specified, inherited
+ *    value is used. If no inherited, defaults to false.
  */
-setProperty = \obj, prop, value, enumerable ->
-    Object.defineProperty(
-        copy(obj),
-        prop, {
-            'value': value,
-            'enumerable': (enumerable === undefined ?
-                Object.prototype.propertyIsEnumerable.call(obj, prop) :
-                enumerable)
-        });
+setProperty = \obj, prop, value, enumerable -> {
+    var props = copyProps(obj);
+    var current = props[prop];
+    props[prop] = {
+        'value': value,
+        'enumerable': (!current || enumerable !== undefined ?
+            enumerable :
+            current.enumerable)
+    };
+    return Object.create(Object.getPrototypeOf(obj), props);
+};
 
 /**
- * Set a bunch of properties on an object.
+ * Set multiple properties on an object.
  * 
  * @param obj Object to set properties on.
  * @param properties Object mapping keys to an object with a value property and
  *    optional enumerable property.
  */
-setProperties = \obj, properties ->
-    Object.keys(properties)
-        .reduce(
-            \p, c -> setProperty(p, c, properties[c].value, properties[c].enumerable),
-            obj);
+setProperties = \obj, properties -> {
+    var props = copyProps(obj),
+        keys = Object.keys(obj);
+    for (var i = 0, len = keys.length; i < len; i = i + 1) {
+        var key = keys[i];
+        var current = props[key],
+            value = properties[key].value,
+            enumerable = properties[key].enumerable;
+        props[key] = {
+            'value': value,
+            'enumerable': (!current || enumerable !== undefined ?
+                enumerable :
+                current.enumerable)
+        };
+    }
+    return Object.create(Object.getPrototypeOf(obj), props);
+};
 
 /**
  * Create a new copy of 'obj' with property 'name' deleted.
  */
 deleteProperty = function(obj, name) {
-    var out = new (Object.getPrototypeOf(obj).constructor)();
-    Object.getOwnPropertyNames(obj).forEach(\i -> {
-        if (i !== name)
-            out[i] = obj[i];
-    });
-    return out;
+    var props = copyProps(obj);
+    delete props[name];
+    return Object.create(Object.getPrototypeOf(obj), props);
 };
 
 }

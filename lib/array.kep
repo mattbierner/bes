@@ -2,6 +2,8 @@
  * @fileOverview
  */
 package (
+    copy,
+    
     push,
     pop,
     shift,
@@ -16,6 +18,13 @@ var reduce = Function.prototype.call.bind(Array.prototype.reduce);
 
 /* Array Operations
  ******************************************************************************/
+copy = \arr{length} -> {
+    var out = [];
+    for (var i = 0; i < length; i = i + 1)
+        out[i] = arr[i];
+    return out;
+};
+
 /**
  * Create a new array with zero or more 'elements' appended onto  'arr'.
  * 

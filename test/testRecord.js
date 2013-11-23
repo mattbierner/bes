@@ -115,7 +115,7 @@ function(record){
                 
                 var x = r.create(1, 2, 3);
                 var y = x.setA(100).setC(4);
-                
+
                 assert.deepEqual(proto.a, 10);
                 assert.deepEqual(proto.bla, 7);
                 assert.deepEqual(Object.keys(proto), ['a', 'bla']);
@@ -137,7 +137,6 @@ function(record){
                 var r2 = record.extend(r, ['x', 'y']);
 
                 var x = r2.create(1, 2, 3, 4);
-                debugger;
                 var y = x.setA(100).setY(55);
                 
                 assert.deepEqual(x.a, 1);

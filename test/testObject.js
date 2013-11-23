@@ -12,6 +12,27 @@ function(object){
                 assert.deepEqual(object.setProperty(a, 'w', 3, true), {'x': 3, 'y': {z: 4}, 'w': 3});
                 assert.deepEqual(a, {x: 3, y: {z: 4}});
             }],
+            ["Set keeps enumerability",
+            function(){
+                var a = Object.create(null, {
+                    x: {'value': 3, 'enumerable': true},
+                    y: {'value': {z: 4}, 'enumerable': false}});
+                
+                var r = object.setProperty(a, 'w', 5, true);
+                assert.deepEqual(r.x, 3);
+                assert.deepEqual(r.y, {'z': 4});
+                assert.deepEqual(r.w, 5);
+
+                assert.equal(Object.getOwnPropertyDescriptor(r, 'x').enumerable, true);
+                assert.equal(Object.getOwnPropertyDescriptor(r, 'y').enumerable, false);
+                assert.equal(Object.getOwnPropertyDescriptor(r, 'w').enumerable, true);
+
+                assert.deepEqual(a.x, 3);
+                assert.deepEqual(a.y, {'z': 4});
+                assert.deepEqual(a.w, undefined);
+
+            }],
+            
             ["Config non config Property",
             function(){
                 var a = Object.freeze(Object.create(Object.prototype, {
