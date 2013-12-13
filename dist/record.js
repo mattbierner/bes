@@ -17,6 +17,12 @@ define(["require", "exports", "amulet/object"], (function(require, exports, __o)
             }))
             .join("");
     });
+    var wrapConstructor = (function(ctor) {
+        return (function() {
+            var args = arguments;
+            return ctor.apply(this, args);
+        });
+    });
     (declare = (function() {
             {
                 var defaultConstructor = (function(keys) {
@@ -62,7 +68,7 @@ define(["require", "exports", "amulet/object"], (function(require, exports, __o)
         .call(this));
     (extend = (function(base, keys, ctor) {
         return ((keys && keys.length) ? declare(new(base)(), concat(base.__keys, keys), ctor) : declare(
-            new(base)(), base.__keys, (ctor || base)));
+            new(base)(), base.__keys, (ctor || wrapConstructor(base))));
     }));
     (exports.declare = declare);
     (exports.extend = extend);

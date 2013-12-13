@@ -16,6 +16,11 @@ var propertyCase = \name ->
         .match(`\w\S*`g)
         .map(\str[first] -> first.toUpperCase() + str.slice(1))
         .join('');
+
+var wrapConstructor = \ctor ->
+    function \args(...) ->
+        ctor.apply(this, args);
+
 /*
  ******************************************************************************/
 /**
@@ -64,7 +69,6 @@ in
         // create
         var Fwd = function \args ->
             construct.apply(this, args);
-        
         Fwd.prototype = new construct;
         construct.create = \args(...) -> new Fwd(args);
         
@@ -89,6 +93,6 @@ extend = \base, keys, ctor ->
         declare(
             new base,
             base.__keys,
-            ctor || base));
+            ctor || wrapConstructor(base)));
 
 }
