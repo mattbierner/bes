@@ -1,5 +1,17 @@
 # ChangeLog #
 
+## 3.0.0 - December 13, 2013
+* Moved files to dist directory.
+* Improved record performance.
+** Reverted so record does mutate passed in custom ctors. This is not ideal but
+  greatly increases performance when using `new`.
+** Performance of records with custom ctor for `new` same as direct ctor call.
+** `create` around 10x faster.
+
+## 2.1.0 - November 23, 2013
+* Fixed object operations to preserve existing property descriptors.
+* Added `copy` for arrays.
+
 ## 2.0.1 - November 1, 2013
 * Changed record to not modify passed in `ctor` or `proto` object.
 

@@ -43,7 +43,8 @@ define(["require", "exports"], (function(require, exports) {
                 return slice(arr, 0, i)
                     .concat(slice(args, 3), slice(arr, (i + Math.max(howMany, 0))));
             }
-        })();
+        })
+            .call(this);
     }));
     (reverse = (function(arr) {
         var arr = arr,

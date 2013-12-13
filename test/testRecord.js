@@ -12,6 +12,9 @@ function(record){
                 var x = r.create(1, 2, 3);
                 var y = r.create("g", [43], null);
                 
+                assert.ok(x instanceof r);
+                assert.ok(y instanceof r);
+                
                 assert.deepEqual(x.a, 1);
                 assert.deepEqual(x.b, 2);
                 assert.deepEqual(x.c, 3);
@@ -27,6 +30,9 @@ function(record){
                 var x = new r(1, 2, 3);
                 var y = new r("g", [43], null);
                 
+                assert.ok(x instanceof r);
+                assert.ok(y instanceof r);
+                
                 assert.deepEqual(x.a, 1);
                 assert.deepEqual(x.b, 2);
                 assert.deepEqual(x.c, 3);
@@ -41,6 +47,7 @@ function(record){
                 
                 var x = r.create(1, 2, 3);
                 var y = x.setA(100).setC(4);
+                
                 
                 assert.deepEqual(x.a, 1);
                 assert.deepEqual(x.b, 2);

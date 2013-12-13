@@ -33,39 +33,40 @@ var propertyCase = \name ->
  * @param keys Ordered set of names for properties on the record.
  * @param [ctor] Optional custom constructor to use. Default constructor 
  *    binds every key in `keys` to the argument at that index.
+ *    WARNING, this object is modified for performance reasons.
+ *    A new function should always be used.
  * 
  */
 declare = let
     defaultConstructor = \keys{length} ->
-        \args(...) -> {
+        function \args(...) -> {
             for (var i = 0; i < length; i = i + 1)
                 this[keys[i]] = args[i];
         },
     
-    wrapConstructor = \ctor ->
-        \args(...) -> ctor.apply(this, args),
-
     makeSetter = \key -> \x -> setProperty(this, key, x),
     
     makeCtorSetter = \key -> Function.prototype.call.bind(makeSetter(key))
 in
     \proto, keys, ctor -> {
-        var construct = (ctor ? wrapConstructor(ctor) : defaultConstructor(keys));
-        
+        var construct = (ctor || defaultConstructor(keys));
         construct.__keys = keys;
-        construct.create = \args(...) -> {
-            Array.prototype.unshift.call(args, null); 
-            return new (construct.bind.apply(construct, args));
-        };
-            
         construct.prototype = Object.create(proto || new Object);
         construct.prototype.constructor = construct;
         
-        keys.forEach(\key -> {
+        // setters
+        keys.forEach <|\ key -> {
             var setterName = 'set' + propertyCase(key);
             construct[setterName] = makeCtorSetter(key);
             construct.prototype[setterName] = makeSetter(key);
-        });
+        };
+        
+        // create
+        var Fwd = function \args ->
+            construct.apply(this, args);
+        
+        Fwd.prototype = new construct;
+        construct.create = \args(...) -> new Fwd(args);
         
         return construct;
     };
