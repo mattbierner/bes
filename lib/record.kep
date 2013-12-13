@@ -69,6 +69,7 @@ in
         // create
         var Fwd = function \args ->
             construct.apply(this, args);
+        Fwd.prototype = construct.prototype;
         construct.create = \args(...) -> new Fwd(args);
         
         return construct;
