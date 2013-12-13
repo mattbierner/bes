@@ -75,15 +75,20 @@ in
  * Extend an existing record with a new set of keys to create a new record.
  * 
  * @param base Extended record ctor.
- * @param keys Set of keys.
+ * @param [keys] Set of additional keys.
  * @param [ctor] Custom constructor for new record.
  * 
  * @return New record ctor.
  */
 extend = \base, keys, ctor ->
-    declare(
-        new base,
-        concat(base.__keys, keys),
-        ctor);
+    (keys && keys.length ?
+        declare(
+            new base,
+            concat(base.__keys, keys),
+            ctor) :
+        declare(
+            new base,
+            base.__keys,
+            ctor || base));
 
 }

@@ -172,7 +172,78 @@ function(record){
                 assert.deepEqual(x.x, 12);
                 assert.deepEqual(x.y, 20);
             }],
-           
+            ["Record extend on custom ctor",
+            function(){
+                var r = record.declare(null, ['a', 'b'], function(a, b) {
+                    this.a = a * 2;
+                    this.b = b * 3;
+                });
+                var r2 = record.extend(r, ['x', 'y']);
+
+                var x = r2.create(1, 2, 3, 4);
+                var y = x.setA(100).setY(55);
+                
+                assert.deepEqual(x.a, 1);
+                assert.deepEqual(x.b, 2);
+                assert.deepEqual(x.x, 3);
+                assert.deepEqual(x.y, 4);
+
+                assert.deepEqual(y.a, 100);
+                assert.deepEqual(y.b, 2);
+                assert.deepEqual(y.x, 3);
+                assert.deepEqual(y.y, 55);
+            }],
+            ["Record extend on custom custom ctor",
+            function(){
+                var r = record.declare(null, ['a', 'b'],  function(a, b) {
+                    this.a = a * 2;
+                    this.b = b * 3;
+                });
+                var r2 = record.extend(r, ['x', 'y'], function(a, b, x, y) {
+                    r.call(this, a, b);
+                    this.x = x * 4;
+                    this.y = y * 5;
+                });
+
+                var x = r2.create(1, 2, 3, 4);
+                assert.deepEqual(x.a, 2);
+                assert.deepEqual(x.b, 6);
+                assert.deepEqual(x.x, 12);
+                assert.deepEqual(x.y, 20);
+            }],
+            
+            ["Record extend nothing",
+            function(){
+                var r = record.declare(null, ['a', 'b'], function(a, b) {
+                    this.a = a * 2;
+                    this.b = b * 3;
+                });
+                
+                var r2 = record.extend(r);
+
+                var x = r2.create(1, 2);
+                
+                assert.ok(x instanceof r);
+                assert.ok(x instanceof r2);
+
+                assert.deepEqual(x.a, 2);
+                assert.deepEqual(x.b, 6);
+            }],
+            ["Record extend nothing replacector",
+            function(){
+                var r = record.declare(null, ['a', 'b'],  function(a, b) {
+                    this.a = a * 2;
+                    this.b = b * 3;
+                });
+                var r2 = record.extend(r, [], function(a, b) {
+                    this.a = a * 5;
+                    this.b = b * 6;
+                });
+
+                var x = r2.create(1, 2);
+                assert.equal(x.a, 5);
+                assert.equal(x.b, 12);
+            }],
         ],
     };
 });

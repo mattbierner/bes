@@ -61,7 +61,8 @@ define(["require", "exports", "amulet/object"], (function(require, exports, __o)
         })
         .call(this));
     (extend = (function(base, keys, ctor) {
-        return declare(new(base)(), concat(base.__keys, keys), ctor);
+        return ((keys && keys.length) ? declare(new(base)(), concat(base.__keys, keys), ctor) : declare(
+            new(base)(), base.__keys, (ctor || base)));
     }));
     (exports.declare = declare);
     (exports.extend = extend);
