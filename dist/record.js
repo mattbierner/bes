@@ -56,7 +56,6 @@ define(["require", "exports", "amulet/object"], (function(require, exports, __o)
                     var Fwd = (function(args) {
                         return construct.apply(this, args);
                     });
-                    (Fwd.prototype = construct.prototype);
                     (construct.create = (function() {
                         var args = arguments;
                         return new(Fwd)(args);
