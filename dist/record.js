@@ -1,8 +1,4 @@
-/*
- * THIS FILE IS AUTO GENERATED from 'lib/record.kep'
- * DO NOT EDIT
-*/
-define(["require", "exports", "amulet/object"], (function(require, exports, __o) {
+define(["require", "exports", "./object"], (function(require, exports, __o) {
     "use strict";
     var setProperty = __o["setProperty"],
         declare, extend, concat = Function.prototype.call.bind(Array.prototype.concat),

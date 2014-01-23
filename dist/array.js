@@ -1,7 +1,3 @@
-/*
- * THIS FILE IS AUTO GENERATED from 'lib/array.kep'
- * DO NOT EDIT
-*/
 define(["require", "exports"], (function(require, exports) {
     "use strict";
     var copy, push, pop, shift, unshift, splice, reverse, concat = Function.prototype.call.bind(Array.prototype

@@ -1,7 +1,3 @@
-/*
- * THIS FILE IS AUTO GENERATED from 'lib/object.kep'
- * DO NOT EDIT
-*/
 define(["require", "exports"], (function(require, exports) {
     "use strict";
     var setProperty, setProperties, deleteProperty, copyProps = (function(obj) {
