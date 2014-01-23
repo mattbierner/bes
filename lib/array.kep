@@ -18,7 +18,7 @@ var reduce = Function.prototype.call.bind(Array.prototype.reduce);
 
 /* Array Operations
  ******************************************************************************/
-copy = \arr{length} -> {
+copy = \arr#{length} -> {
     var out = [];
     for (var i = 0; i < length; i = i + 1)
         out[i] = arr[i];
@@ -43,7 +43,7 @@ push = \args(arr, ...) ->
  * 
  * @return New array with last element removed or empty array if 'arr' was empty.
  */
-pop = \arr{length} ->
+pop = \arr#{length} ->
     slice(arr, 0, length - 1);
 
 /**
@@ -79,7 +79,7 @@ shift = \arr -> slice(arr, 1);
  * @return New array from 'arr' with 'howMany' removed at 'index' and
  *    zero or more 'elements' inserted.
  */
-splice  = \args(arr{length}, index, howMany, ...) -> let
+splice  = \args(arr#{length}, index, howMany, ...) -> let
     i = (index < 0 ? length + index : index)
 in
     slice(arr, 0, i)
@@ -94,7 +94,7 @@ in
  * 
  * @return New array of reversed 'arr'.
  */
-reverse = \arr{length} ->
+reverse = \arr#{length} ->
     (length > 0 ?
         reduce(slice(arr, 1), unshift, [arr[0]]) :
         arr);

@@ -32,7 +32,8 @@ function(record){
                 
                 assert.ok(x instanceof r);
                 assert.ok(y instanceof r);
-                
+                assert.deepEqual(Object.keys(x), ['a', 'b', 'c']);
+
                 assert.deepEqual(x.a, 1);
                 assert.deepEqual(x.b, 2);
                 assert.deepEqual(x.c, 3);
@@ -146,6 +147,8 @@ function(record){
                 var x = r2.create(1, 2, 3, 4);
                 var y = x.setA(100).setY(55);
                 
+                assert.ok(x instanceof r);
+                assert.ok(x instanceof r2);
                 assert.deepEqual(x.a, 1);
                 assert.deepEqual(x.b, 2);
                 assert.deepEqual(x.x, 3);
@@ -183,11 +186,15 @@ function(record){
                 var x = r2.create(1, 2, 3, 4);
                 var y = x.setA(100).setY(55);
                 
+                assert.ok(x instanceof r);
+                assert.ok(x instanceof r2);
                 assert.deepEqual(x.a, 1);
                 assert.deepEqual(x.b, 2);
                 assert.deepEqual(x.x, 3);
                 assert.deepEqual(x.y, 4);
 
+                assert.ok(y instanceof r);
+                assert.ok(y instanceof r2);
                 assert.deepEqual(y.a, 100);
                 assert.deepEqual(y.b, 2);
                 assert.deepEqual(y.x, 3);
@@ -206,6 +213,8 @@ function(record){
                 });
 
                 var x = r2.create(1, 2, 3, 4);
+                assert.ok(x instanceof r);
+                assert.ok(x instanceof r2);
                 assert.deepEqual(x.a, 2);
                 assert.deepEqual(x.b, 6);
                 assert.deepEqual(x.x, 12);
@@ -225,7 +234,6 @@ function(record){
                 
                 assert.ok(x instanceof r);
                 assert.ok(x instanceof r2);
-
                 assert.deepEqual(x.a, 2);
                 assert.deepEqual(x.b, 6);
             }],

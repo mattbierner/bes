@@ -2,7 +2,7 @@
  * 
  */
 package (
-    declare,
+    declare
     extend)
 with
     import 'amulet/object' {setProperty}
@@ -14,12 +14,12 @@ var map = Function.prototype.call.bind(Array.prototype.map);
 var propertyCase = \name ->
     name
         .match(`\w\S*`g)
-        .map(\str[first] -> first.toUpperCase() + str.slice(1))
+        .map(\str#[first] -> first.toUpperCase() + str.slice(1))
         .join('');
 
 var wrapConstructor = \ctor ->
-    function \args(...) ->
-        ctor.apply(this, args);
+    function \args(...) =self->
+        ctor.apply(self, args);
 
 /*
  ******************************************************************************/
@@ -43,13 +43,13 @@ var wrapConstructor = \ctor ->
  * 
  */
 declare = let
-    defaultConstructor = \keys{length} ->
-        function \args(...) -> {
+    defaultConstructor = \keys#{length} ->
+        function \args(...) =self-> {
             for (var i = 0; i < length; i = i + 1)
-                this[keys[i]] = args[i];
+                self[keys[i]] = args[i];
         },
     
-    makeSetter = \key -> \x -> setProperty(this, key, x),
+    makeSetter = \key -> \x =self-> setProperty(self, key, x),
     
     makeCtorSetter = \key -> Function.prototype.call.bind(makeSetter(key))
 in
@@ -61,14 +61,14 @@ in
         
         // setters
         keys.forEach <|\ key -> {
-            var setterName = 'set' + propertyCase(key);
+            var setterName = 'set' + propertyCase(key + '');
             construct[setterName] = makeCtorSetter(key);
             construct.prototype[setterName] = makeSetter(key);
         };
         
         // create
-        var Fwd = function \args ->
-            construct.apply(this, args);
+        var Fwd = function \args =self->
+            construct.apply(self, args);
         Fwd.prototype = construct.prototype;
         construct.create = \args(...) -> new Fwd(args);
         

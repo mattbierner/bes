@@ -2,19 +2,22 @@
  * @fileOverview 
  */
 package (
-    setProperty,
-    setProperties,
+    setProperty
+    setProperties
     deleteProperty)
 {
 
 var copyProps = \obj -> {
-    var names = Object.getOwnPropertyNames(obj),
-        props = {};
-    for (var i = 0, len = names.length; i < len; i = i + 1) {
-        var key = names[i];
-        props[key] = Object.getOwnPropertyDescriptor(obj, key);
+    with
+        names#{length} = Object.getOwnPropertyNames(obj)
+    in {
+        var props = {};
+        for (var i = 0; i < length; i = i + 1) {
+            var key = names[i];
+            props[key] = Object.getOwnPropertyDescriptor(obj, key);
+        }
+        return props;
     }
-    return props;
 };
 
 /* Operations
@@ -73,7 +76,7 @@ setProperties = \obj, properties -> {
 /**
  * Create a new copy of 'obj' with property 'name' deleted.
  */
-deleteProperty = function(obj, name) {
+deleteProperty = \obj, name -> {
     var props = copyProps(obj);
     delete props[name];
     return Object.create(Object.getPrototypeOf(obj), props);
