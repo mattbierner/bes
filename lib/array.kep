@@ -2,13 +2,13 @@
  * @fileOverview
  */
 package (
-    copy,
+    copy
     
-    push,
-    pop,
-    shift,
-    unshift,
-    splice,
+    push
+    pop
+    shift
+    unshift
+    splice
     reverse)
 {
 

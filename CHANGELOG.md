@@ -1,5 +1,7 @@
 # ChangeLog #
 
+## 3.1.0 - January 22, 2014
+
 ## 3.0.0 - December 13, 2013
 * Moved files to dist directory.
 * Improved record performance.

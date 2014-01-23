@@ -5,7 +5,7 @@ package (
     declare
     extend)
 with
-    import 'amulet/object' {setProperty}
+    import './object' {setProperty}
 in {
 
 var concat = Function.prototype.call.bind(Array.prototype.concat);
