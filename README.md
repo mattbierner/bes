@@ -17,7 +17,7 @@ arrays and do not mutate the input array.
     a1; // [1, 2, 3, 4]
     a; // [1, 2, 3];
 
-### lib/text - 'bes::object'
+### lib/object - 'bes::object'
 Setting and deleting properties on an object. Operations return a copy of the object
 and do not mutate the original.
 
